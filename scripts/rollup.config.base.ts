@@ -2,11 +2,13 @@ import { nodeResolve } from '@rollup/plugin-node-resolve' // 解析 node_modules
 import commonjs from '@rollup/plugin-commonjs' // cjs => esm
 import alias from '@rollup/plugin-alias' // alias 和 reslove 功能
 import replace from '@rollup/plugin-replace'
-import eslint from '@rollup/plugin-eslint'
+// import eslint from '@rollup/plugin-eslint'
 import { babel } from '@rollup/plugin-babel'
 import { terser } from 'rollup-plugin-terser'
 import clear from 'rollup-plugin-clear'
 import { name, version, author } from '../package.json'
+import typescript from '@rollup/plugin-typescript';
+
 
 const pkgName = 'vtools'
 const banner =
@@ -17,7 +19,7 @@ const banner =
 ' */'
 
 export default {
-  input: 'src/index.js',
+  input: 'src/index.ts',
   output: [
     {
       file: `dist/${pkgName}.umd.js`,
@@ -48,6 +50,13 @@ export default {
     clear({
       targets: ['dist']
     }),
+
+    // TODO: 无法生存 ts 声明定义文件
+    typescript({
+      // declarationDir: "dist",
+      outDir: "dist"
+    }),
+    
     alias(),
     replace({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
@@ -57,11 +66,15 @@ export default {
     commonjs({
       include: 'node_modules/**'
     }),
-    eslint({
-      throwOnError: true, // 抛出异常并阻止打包
-      include: ['src/**'],
-      exclude: ['node_modules/**']
-    }),
-    babel({ babelHelpers: 'bundled' })
+    // TODO: eslint typescript 暂未支持
+    // eslint({
+    //   throwOnError: true, // 抛出异常并阻止打包
+    //   include: ['src/**'],
+    //   exclude: ['node_modules/**']
+    // }),
+    babel({ 
+      babelHelpers: 'bundled', 
+      extensions: ['.ts']
+    })
   ]
 }

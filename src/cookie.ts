@@ -1,4 +1,4 @@
-export function setCookie(key, value, options = {}) {
+export function setCookie(key, value, options:any = {}) {
   let str = key + '=' + encodeURIComponent(value)
   if (options.expires) {
     const curr = new Date()

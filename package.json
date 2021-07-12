@@ -13,12 +13,12 @@
   },
   "homepage": "https://github.com/tiandashu/vtools#readme",
   "scripts": {
-    "dev": "rollup -w --environment NODE_ENV:development -c scripts/rollup.config.dev.js",
-    "build": "rollup --environment NODE_ENV:development -c scripts/rollup.config.prod.js",
+    "dev": "rollup -w --environment NODE_ENV:development -c scripts/rollup.config.dev.ts --configPlugin typescript",
+    "build": "rollup --environment NODE_ENV:development -c scripts/rollup.config.base.ts --configPlugin typescript",
     "x": "npm --no-git-tag-version version major",
     "y": "npm --no-git-tag-version version minor",
     "z": "npm --no-git-tag-version version patch",
-    "lint": "eslint src",
+    "lint": "eslint src/**/*.ts",
     "fix": "npm run lint --fix",
     "commit": "git-cz",
     "test": "jest",
@@ -61,7 +61,10 @@
     "rollup-plugin-serve": "^1.1.0",
     "rollup-plugin-terser": "^7.0.2"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@rollup/plugin-typescript": "^8.2.1",
+    "typescript": "^4.3.5"
+  },
   "jest": {
     "preset": "rollup-jest"
   }
